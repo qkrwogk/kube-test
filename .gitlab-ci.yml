@@ -28,8 +28,8 @@ build:
     - apk add --no-cache curl jq python3 py3-pip
     - python3 -m venv venv
     - chmod +x ./venv/bin/activate
-    - ./venv/bin/activate
-    - pip install awscli
+    - . ./venv/bin/activate
+    - pip install awscli --no-build-isolation
     - aws ecr get-login-password  --region $AWS_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - aws --version
     - docker info
