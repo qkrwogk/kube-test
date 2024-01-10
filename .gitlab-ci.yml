@@ -4,19 +4,17 @@ stages:
 
 variables:
   # AWS ECR 설정
-  AWS_REGION: 'ap-southeast-2'
-  ECR_REPO: 'kube-test'
-  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  AWS_REGION: ap-southeast-2
+  ECR_REPO: kube-test
 
   # Docker 설정
-  DOCKER_HOST: 'tcp://docker:2375'
-  DOCKER_DRIVER: 'overlay2'
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ''
 
   # Docker 이미지 설정
-  DOCKER_IMAGE_NAME: 'kube-test'
-  DOCKER_REGISTRY: '461338739533.dkr.ecr.ap-southeast-2.amazonaws.com'
+  DOCKER_IMAGE_NAME: kube-test
+  DOCKER_REGISTRY: 461338739533.dkr.ecr.ap-southeast-2.amazonaws.com
 
 build:
   stage: build
