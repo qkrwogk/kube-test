@@ -16,19 +16,18 @@ variables:
 
   # Docker 이미지 설정
   DOCKER_IMAGE_NAME: 'kube-test'
-  CONTAINER_REGISTRY: '461338739533.dkr.ecr.ap-southeast-2.amazonaws.com'
+  DOCKER_REGISTRY: '461338739533.dkr.ecr.ap-southeast-2.amazonaws.com'
 
 build:
   stage: build
-  image:
-    name: docker:latest
+  image: docker:latest
   services:
-    - docker:dind
+    - docker:19-dind
   before_script:
     - echo "Logging in to the container registry..."
     - apk add --no-cache curl jq python3 py3-pip
     - pip install awscli
-    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - aws ecr get-login-password  --region $AWS_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - aws --version
     - docker info
     - docker --version
@@ -46,11 +45,11 @@ push:
     - docker:dind
   before_script:
     - echo "Logging in to the container registry..."
-    - echo "$AWS_SECRET_ACCESS_KEY" | docker login -u "$AWS_ACCESS_KEY_ID" --password-stdin $CONTAINER_REGISTRY
+    - echo "$AWS_SECRET_ACCESS_KEY" | docker login -u "$AWS_ACCESS_KEY_ID" --password-stdin $DOCKER_REGISTRY
   script:
     - echo "Tagging Docker image..."
-    - docker tag $DOCKER_IMAGE_NAME $CONTAINER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME:$CI_PIPELINE_IID
+    - docker tag $DOCKER_IMAGE_NAME $DOCKER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME:$CI_PIPELINE_IID
     - echo "Pushing Docker image to ECR..."
-    - docker push $CONTAINER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME:$CI_PIPELINE_IID
+    - docker push $DOCKER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME:$CI_PIPELINE_IID
   only:
     - develop
