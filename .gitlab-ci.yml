@@ -28,7 +28,7 @@ build:
     - chmod +x ./venv/bin/activate
     - . ./venv/bin/activate
     - pip install awscli --no-build-isolation
-    - aws ecr get-login-password  --region $AWS_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - aws --version
     - docker info
     - docker --version
