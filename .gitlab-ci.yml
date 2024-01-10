@@ -26,7 +26,12 @@ build:
     - docker:dind
   before_script:
     - echo "Logging in to the container registry..."
-    - echo "$AWS_SECRET_ACCESS_KEY" | docker login -u "$AWS_ACCESS_KEY_ID" --password-stdin $CONTAINER_REGISTRY
+    - apk add --no-cache curl jq python3 py3-pip
+    - pip install awscli
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - aws --version
+    - docker info
+    - docker --version
   script:
     - echo "Building Docker image..."
     - docker build -t $DOCKER_IMAGE_NAME .
@@ -37,6 +42,8 @@ push:
   stage: push
   image:
     name: docker:latest
+  services:
+    - docker:dind
   before_script:
     - echo "Logging in to the container registry..."
     - echo "$AWS_SECRET_ACCESS_KEY" | docker login -u "$AWS_ACCESS_KEY_ID" --password-stdin $CONTAINER_REGISTRY
