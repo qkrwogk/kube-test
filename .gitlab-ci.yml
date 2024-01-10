@@ -5,13 +5,13 @@ stages:
 variables:
   # AWS ECR 설정
   AWS_REGION: 'ap-southeast-2'
-  ECR_REPO: '461338739533.dkr.ecr.ap-southeast-2.amazonaws.com/kube-test'
+  ECR_REPO: 'kube-test'
   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
 
   # Docker 설정
   DOCKER_IMAGE_NAME: 'kube-test'
-  CONTAINER_REGISTRY: 'kube-test'
+  CONTAINER_REGISTRY: '461338739533.dkr.ecr.ap-southeast-2.amazonaws.com'
 
 build:
   stage: build
