@@ -26,7 +26,9 @@ build:
   before_script:
     - echo "Logging in to the container registry..."
     - apk add --no-cache curl jq python3 py3-pip
-    - pip3 install awscli --no-build-isolation
+    - python3 -m venv venv
+    - ./venv/bin/activate
+    - pip install awscli
     - aws ecr get-login-password  --region $AWS_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - aws --version
     - docker info
