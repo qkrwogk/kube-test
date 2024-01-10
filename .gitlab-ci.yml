@@ -10,6 +10,11 @@ variables:
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
 
   # Docker 설정
+  DOCKER_HOST: 'tcp://docker:2375'
+  DOCKER_DRIVER: 'overlay2'
+  DOCKER_TLS_CERTDIR: ''
+
+  # Docker 이미지 설정
   DOCKER_IMAGE_NAME: 'kube-test'
   CONTAINER_REGISTRY: '461338739533.dkr.ecr.ap-southeast-2.amazonaws.com'
 
@@ -27,12 +32,13 @@ push:
   stage: push
   image:
     name: docker:latest
+  services:
   script:
     - echo "Logging in to the container registry..."
     - echo "$AWS_SECRET_ACCESS_KEY" | docker login -u "$AWS_ACCESS_KEY_ID" --password-stdin $CONTAINER_REGISTRY
     - echo "Tagging Docker image..."
-    - docker tag $DOCKER_IMAGE_NAME $CONTAINER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME
+    - docker tag $DOCKER_IMAGE_NAME $CONTAINER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME:$CI_PIPELINE_IID
     - echo "Pushing Docker image to ECR..."
-    - docker push $CONTAINER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME
+    - docker push $CONTAINER_REGISTRY/$ECR_REPO/$DOCKER_IMAGE_NAME:$CI_PIPELINE_IID
   only:
     - develop
