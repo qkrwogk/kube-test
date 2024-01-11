@@ -2,10 +2,6 @@ stages:
   - build_and_push
 
 variables:
-  # AWS ECR 설정
-  AWS_REGION: ap-southeast-2
-  ECR_REPO: kube-test
-
   # Docker 설정
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
